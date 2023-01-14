@@ -1,6 +1,9 @@
 import http from "http";
 import fs from "fs";
-
+const templateOverview = fs.readFileSync(
+  `${__dirname}/templates/template-overview.html`,
+  "utf-8"
+);
 const rawProductdata = fs.readFileSync(
   `${__dirname}/dev-data/data.json`,
   "utf-8"
@@ -12,7 +15,8 @@ const server = http.createServer((req, res) => {
 
   // Home || Overview
   if (pathName === "/" || pathName === "/overview") {
-    res.end("listening home or overview");
+    res.writeHead(200, { "Content-type": "text/html" });
+    res.end(templateOverview);
     return;
   }
 
