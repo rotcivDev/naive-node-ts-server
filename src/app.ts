@@ -1,17 +1,35 @@
 import http from "http";
+import fs from "fs";
+
+const rawProductdata = fs.readFileSync(
+  `${__dirname}/dev-data/data.json`,
+  "utf-8"
+);
+const parsedProductData = JSON.parse(rawProductdata);
 
 const server = http.createServer((req, res) => {
   const pathName = req.url;
 
-  if (pathName === "/") {
-    res.end("listening root");
-    return;
-  }
-  if (pathName === "/first-route") {
-    res.end("first route");
+  // Home || Overview
+  if (pathName === "/" || pathName === "/overview") {
+    res.end("listening home or overview");
     return;
   }
 
+  // Product
+  if (pathName === "/product") {
+    res.end("listening product");
+    return;
+  }
+
+  // Api
+  if (pathName === "/api") {
+    res.writeHead(200, { "Content-type": "application/json" });
+    res.end(rawProductdata);
+    return;
+  }
+
+  // Not found
   res.writeHead(404, {
     "Content-type": "text/html",
   });
