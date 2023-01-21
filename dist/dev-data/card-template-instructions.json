@@ -1,0 +1,26 @@
+[
+  {
+    "placeholder": "{%IMAGE%}",
+    "newValueKey": "image"
+  },
+  {
+    "placeholder": "{%PRODUCTNAME%}",
+    "newValueKey": "productName"
+  },
+  {
+    "placeholder": "{%QUANTITY%}",
+    "newValueKey": "quantity"
+  },
+  {
+    "placeholder": "{%PRICE%}",
+    "newValueKey": "price"
+  },
+  {
+    "placeholder": "{%ID%}",
+    "newValueKey": "id"
+  },
+  {
+    "placeholder": "{%NOT_ORGANIC%}",
+    "newValueKey": "hasTag"
+  }
+]
