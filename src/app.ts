@@ -1,28 +1,51 @@
 import http from "http";
-import fs from "fs";
-const templateOverview = fs.readFileSync(
-  `${__dirname}/templates/template-overview.html`,
-  "utf-8"
-);
-const rawProductdata = fs.readFileSync(
-  `${__dirname}/dev-data/data.json`,
-  "utf-8"
-);
-const parsedProductData = JSON.parse(rawProductdata);
+import {
+  replacePlaceholderWithData,
+  replacePlaceholderWithTemplate,
+  templateReplacementInstructions,
+} from "./template-data-injector";
+import { fileReader } from "./file-reader";
 
+// Templates
+const templateCard = fileReader("card");
+
+const templateOverview = fileReader("overview");
+const templateProduct = fileReader("product");
+
+// Data
+const rawProductdata = fileReader("apiData");
+const parsedProductData: Record<string, string>[] = JSON.parse(rawProductdata);
+const templateCardInstructions = fileReader("cardTemplateInstructions");
+const parsedTemplateCardInstructions = JSON.parse(templateCardInstructions);
 const server = http.createServer((req, res) => {
   const pathName = req.url;
 
   // Home || Overview
   if (pathName === "/" || pathName === "/overview") {
+    const cardColectionTemplate = parsedProductData
+      .map((product) =>
+        replacePlaceholderWithData({
+          dataSource: product,
+          templateReplacementInstructions: parsedTemplateCardInstructions,
+          templateSource: templateCard,
+        })
+      )
+      .join("");
+
+    const newOverviewTemplate = replacePlaceholderWithTemplate({
+      childTemplate: cardColectionTemplate,
+      placeholder: "{%PRODUCT_CARDS%}",
+      templaceSource: templateOverview,
+    });
     res.writeHead(200, { "Content-type": "text/html" });
-    res.end(templateOverview);
+    res.end(newOverviewTemplate);
     return;
   }
 
   // Product
   if (pathName === "/product") {
-    res.end("listening product");
+    res.writeHead(200, { "Content-type": "text/html" });
+    res.end(templateProduct);
     return;
   }
 
