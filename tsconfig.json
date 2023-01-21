@@ -15,9 +15,6 @@
     "moduleResolution": "node",
     "rootDir": "src",
     "baseUrl": "src",
-    "outDir": "dist/",
-    "paths": {
-      "@/*": ["*"]
-    }
+    "outDir": "dist/"
   }
 }
