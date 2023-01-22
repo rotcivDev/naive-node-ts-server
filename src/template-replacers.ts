@@ -1,4 +1,4 @@
-export type templateReplacementInstructions = {
+type templateReplacementInstructions = {
   placeholder: string;
   newValueKey: string;
 }[];
