@@ -49,17 +49,16 @@ const server = http.createServer((req, res) => {
   }
 
   // Product
-  if (pathname === "/product") {
+  if (pathname && pathname.includes("/product")) {
+    console.log(pathname);
     const rawProductdata = fileReader("apiData");
     const parsedProductData: Record<string, string>[] =
       JSON.parse(rawProductdata);
 
-    const [key, value] = query?.split("=") as Array<string>;
+    const [blank, path, slug] = pathname?.split("/") as Array<string>;
 
     const product =
-      key &&
-      value &&
-      parsedProductData.find((productData) => productData[key] == value);
+      slug && parsedProductData.find((productData) => productData.slug == slug);
 
     if (product) {
       const productTemplateWithData = replacePlaceholderWithData({

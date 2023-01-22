@@ -16,8 +16,8 @@
     "newValueKey": "price"
   },
   {
-    "placeholder": "{%ID%}",
-    "newValueKey": "id"
+    "placeholder": "{%SLUG%}",
+    "newValueKey": "slug"
   },
   {
     "placeholder": "{%NOT_ORGANIC%}",
