@@ -1,27 +1,33 @@
 import http from "http";
+import url from "node:url";
 import {
   replacePlaceholderWithData,
   replacePlaceholderWithTemplate,
-  templateReplacementInstructions,
-} from "./template-data-injector";
+} from "./template-replacers";
 import { fileReader } from "./file-reader";
 
 // Templates
 const templateCard = fileReader("card");
-
 const templateOverview = fileReader("overview");
 const templateProduct = fileReader("product");
 
 // Data
-const rawProductdata = fileReader("apiData");
-const parsedProductData: Record<string, string>[] = JSON.parse(rawProductdata);
 const templateCardInstructions = fileReader("cardTemplateInstructions");
 const parsedTemplateCardInstructions = JSON.parse(templateCardInstructions);
+const templateProductInstructions = fileReader("productTemplateInstructions");
+const parsedTemplateProductInstructions = JSON.parse(
+  templateProductInstructions
+);
+
 const server = http.createServer((req, res) => {
-  const pathName = req.url;
+  const { pathname, query } = url.parse(req.url as string);
 
   // Home || Overview
-  if (pathName === "/" || pathName === "/overview") {
+  if (pathname === "/" || pathname === "/overview") {
+    const rawProductdata = fileReader("apiData");
+    const parsedProductData: Record<string, string>[] =
+      JSON.parse(rawProductdata);
+
     const cardColectionTemplate = parsedProductData
       .map((product) =>
         replacePlaceholderWithData({
@@ -43,14 +49,34 @@ const server = http.createServer((req, res) => {
   }
 
   // Product
-  if (pathName === "/product") {
-    res.writeHead(200, { "Content-type": "text/html" });
-    res.end(templateProduct);
-    return;
+  if (pathname === "/product") {
+    const rawProductdata = fileReader("apiData");
+    const parsedProductData: Record<string, string>[] =
+      JSON.parse(rawProductdata);
+
+    const [key, value] = query?.split("=") as Array<string>;
+
+    const product =
+      key &&
+      value &&
+      parsedProductData.find((productData) => productData[key] == value);
+
+    if (product) {
+      const productTemplateWithData = replacePlaceholderWithData({
+        dataSource: product,
+        templateReplacementInstructions: parsedTemplateProductInstructions,
+        templateSource: templateProduct,
+      });
+      res.writeHead(200, { "Content-type": "text/html" });
+      res.end(productTemplateWithData);
+      return;
+    }
   }
 
   // Api
-  if (pathName === "/api") {
+  if (pathname === "/api") {
+    const rawProductdata = fileReader("apiData");
+
     res.writeHead(200, { "Content-type": "application/json" });
     res.end(rawProductdata);
     return;

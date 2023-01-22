@@ -6,6 +6,7 @@ interface ISourceKeyDictionary {
   card: string;
   apiData: string;
   cardTemplateInstructions: string;
+  productTemplateInstructions: string;
 }
 
 const sourceKeyDictionary: ISourceKeyDictionary = {
@@ -14,6 +15,7 @@ const sourceKeyDictionary: ISourceKeyDictionary = {
   card: `${__dirname}/templates/template-card.html`,
   apiData: `${__dirname}/dev-data/data.json`,
   cardTemplateInstructions: `${__dirname}/dev-data/card-template-instructions.json`,
+  productTemplateInstructions: `${__dirname}/dev-data/product-template-instructions.json`,
 };
 
 export function fileReader(docKey: keyof ISourceKeyDictionary) {
