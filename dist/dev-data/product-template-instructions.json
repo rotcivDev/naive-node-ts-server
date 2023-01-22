@@ -1,0 +1,34 @@
+[
+  {
+    "placeholder": "{%IMAGE%}",
+    "newValueKey": "image"
+  },
+  {
+    "placeholder": "{%PRODUCTNAME%}",
+    "newValueKey": "productName"
+  },
+  {
+    "placeholder": "{%QUANTITY%}",
+    "newValueKey": "quantity"
+  },
+  {
+    "placeholder": "{%PRICE%}",
+    "newValueKey": "price"
+  },
+  {
+    "placeholder": "{%FROM%}",
+    "newValueKey": "from"
+  },
+  {
+    "placeholder": "{%NOT_ORGANIC%}",
+    "newValueKey": "hasTag"
+  },
+  {
+    "placeholder": "{%NUTRIENTS%}",
+    "newValueKey": "nutrients"
+  },
+  {
+    "placeholder": "{%DESCRIPTION%}",
+    "newValueKey": "description"
+  }
+]
